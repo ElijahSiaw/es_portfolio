@@ -35,6 +35,7 @@ def register():
     return render_template('account/signup.html')
 
 @bp.route('/login', methods=('GET', 'POST'))
+@verify_token
 def login():
     if request.method == 'POST':
         email = request.form['email']
@@ -63,7 +64,7 @@ def login():
             res.set_cookie('es-se-state', token, 'max_age', expiredin)
             return res, 200
         flash(error, 'error')
-    if session.get('user_id'):
+    if request.user:
       return redirect(url_for('home'))
     return render_template('account/login.html')
   
@@ -104,6 +105,7 @@ def verify_token(f):
             user = essolution.models.get_user_byId(data['user_id'])
             if not user:
               return redirect(url_for('auth.logout'))
+            request.user = user
         except jwt.ExpiredSignatureError:
             return redirect(url_for('auth.logout'))
         except jwt.InvalidTokenError:
