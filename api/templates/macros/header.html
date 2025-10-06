@@ -1,0 +1,47 @@
+{% from 'macros/themeswitcher.html' import switch %}
+<header class="header supports-backdrop-blur fixed left-0 right-0 top-0 z-40 bg-white/75 py-4 backdrop-blur dark:bg-dark/75">
+      <div class="mx-auto flex max-w-6xl items-center justify-between px-3 xl:max-w-5xl xl:px-0">
+          <div class="flex items-center">
+            <div class="fill-dark dark:text-white dark:fill-white rounded-full" >
+            <a href="/" aria-label="Es Solution">
+            <img class="text-sm rounded-full" src="{{url_for('static',filename='images/favicon.png')}}" width="40" height="40" alt="logo"/>
+             </a>
+            </div>
+          <h2 class="group ml-2  md:w-36 lg:w-44 flex-wrap hidden md:inline-flex font-bold transition duration-300">
+            Solution
+          </h2>
+        </div>
+        <div class="flex items-center justify-center text-base leading-2">
+          {{switch()}}
+          <div class="hidden sm:block">
+            <nav>
+    {% if not g.user %}
+	 <a href="{{url_for('auth.login')}}" class="py-1 px-1 font-medium text-sm lg:text-base text-pink-600 {% if request.path == url_for('auth.login') %} border-b-2 border-b-violet-500 {% else %} border-b-2 border-b-transparent hover:border-b-amber-700 dark:hover:border-sky-500 {% endif %}">
+                Log in
+              </a>
+       <a href="{{url_for('auth.register')}}" class="py-1 px-1 font-medium text-sm lg:text-base text-pink-600 {% if request.path == url_for('auth.register') %} border-b-2 border-b-violet-500 {% else %} border-b-2 border-b-transparent hover:border-b-amber-700 dark:hover:border-sky-500 {% endif %}">
+                Sign up
+              </a>
+    {% else %}
+       <a href="{{url_for('auth.logout')}}" class="py-1 px-1 font-medium text-sm lg:text-base text-pink-600 border-b-2 border-b-transparent hover:border-b-amber-700 dark:hover:border-sky-500">
+                Log out
+              </a>
+          <a href="{{url_for('dashboard.index')}}" class="py-1 px-1 font-medium text-sm lg:text-base text-pink-600 {% if request.path.startswith(url_for('dashboard.index')) %} border-b-2 border-b-violet-500 {% else %} border-b-2 border-b-transparent hover:border-b-amber-700 dark:hover:border-sky-500 {% endif %}">
+                Dashboard
+              </a>
+            <a href="/projects" class="py-1 px-1 font-medium text-sm lg:text-base text-pink-600 {% if request.path == '/projects'%} border-b-2 border-b-violet-500 {% else %} border-b-2 border-b-transparent hover:border-b-amber-700 dark:hover:border-sky-500 {% endif %}">
+              Projects
+              </a>
+              {% endif %}
+             <a href="{{url_for('blog.index')}}" class="py-1 px-1 font-medium text-sm lg:text-base text-pink-600 {% if request.path == '/blog' %} border-b-2 border-b-violet-500 {% else %} border-b-2 border-b-transparent hover:border-b-amber-700 dark:hover:border-sky-500 {% endif %}">
+               Blog
+              </a>
+            <a href="/about" class="py-1 px-1 font-medium text-sm lg:text-base text-pink-600 {% if request.path == '/about'%} border-b-2 border-b-violet-500 {% else %} border-b-2 border-b-transparent hover:border-b-amber-700 dark:hover:border-sky-500 {% endif %}">
+                About
+              </a>
+			</nav>
+          </div>
+          {% include 'macros/mobilenav.html' %}
+        </div>
+      </div>
+    </header>

@@ -1,0 +1,119 @@
+{% extends "layout.html" %}
+{% block title %}{% if post and post.id %}Update post{% else %}Create post{% endif %}{% endblock %}
+{% block head %}
+  {{ super() }}
+  <style>
+    .input-group {
+      margin-bottom: 1rem;
+    }
+
+    .input-group label {
+      display: block;
+      margin-bottom: 0.5rem;
+      font-weight: bold;
+    }
+
+    .input-group input {
+      width: 100%;
+      padding: 0.75rem;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+      outline: none;
+      font-size: 1rem;
+    }
+  </style>
+{% endblock %}
+{% block content %}
+<div class="flex justify-center text-center items-center p-2 m-2">
+	<div class="border-2 w-[20rem] md:w-[50rem] shadow  flex flex-col justify-center items-center  text-center p-2 m-2 border border-blue-500 dark:border-gray-500">
+	<div class="w-full flex justify-end">
+	<a class="text-2xl md:text-4xl text-red-800 hover:text-red-600 cursor-pointer font-black p-1" href="{{url_for('dashboard.post', slug='posts')}}" aria-hidden>&times;</a>
+	</div>
+	<div class="w-full">
+	<div class="w-full">
+	<form method="POST" enctype="multipart/form-data" action="{% if post and post.id %}{{url_for('api.update',id=post.id)}}{% else %}{{url_for('api.post')}}{% endif %}" class="w-full flex flex-col justify-center items-center text-center"> 
+	  	<div class="flex flex-col md:w-[40rem] justify-center items-center">
+	  	<div class="bg-gray-500 rounded">
+	  	{% if post %}
+	  	{%set image_url=post.image|replace("b'","")|replace("'","")|safe%}
+ <div classname="flex items-center justify-center">
+<div id="svg-wrapper" class="{% if post and post.image.startswith('b') %}inline-block w-fit m-auto p-2{% else %}hidden{% endif %}">
+{{image_url}}
+</div>
+{% endif %}
+	  	<img id="image-wrapper" class="{% if post and post.image and not post.image.startswith('b') %} inline-block {% else %} hidden {% endif %} m-2" src="{% if post and post.image %} {% if post.image.startswith('https://') or post.image.startswith('data:') %}{{post.image}}{% else %}{{url_for('static', filename=post.image)}}{% endif %} {% endif %}" width="300" height="300" />
+	  	<video controls id="video-wrapper" class="{% if post and post.video %} inline-block {% else %} hidden {% endif %} m-2" src="{% if post and post.video %}{{post.video}}{% endif %}" width="300" height="200" />
+	  	</div>
+	  </div>
+	  <div id="file-wrapper" class="{% if post and (post.image or post.video) %} hidden {% endif %} grid gap-3 w-[10rem] m-2 text-white">
+	   <label class="rounded p-2 bg-blue-500 border-blue-300  dark:bg-gray-800/75 border dark:border-gray-300">
+	   <input name="image" onchange="changeEvent(this)" type="file" class="hidden" accept="image/*" />
+	    Upload image
+	   </label>
+	    <label class="rounded p-2 bg-blue-500 border-blue-300  dark:bg-gray-800/75 border dark:border-gray-300">
+	    <input name="video" onchange="changeEvent(this)" type="file" class="hidden" accept="video/*" />
+	   Upload video
+	   </label>
+	  </div>
+	  <div class="grid gap-3 w-[10rem] m-2 text-white">
+	 <button type="button" id="remove-wrapper" class="{% if post and (post.image or post.video) %} inline-block {% else %} hidden {% endif %} rounded p-2 bg-blue-500 border-blue-300 dark:bg-gray-800/75 border dark:border-gray-300" onclick="removeFile()">Remove</button>
+	 </div>
+</div>
+<div class="flex flex-col justify-center items-center">
+	<div class="flex flex-col md:w-[40rem]">
+	<div id="link-wrapper" class="{% if post and (post.image or post.video) %} hidden {% endif %} grid my-3">
+	<label  for="title"><b>OR</b></label>
+	<input type="text" placeholder="Paste image or video link here" class="rounded p-2 m-2 border-2 border-blue-500 placeholder:text-sm md:placeholder:text-md focus:ring-0 outline-none bg-transparent dark:border-gray-500 dark:focus:border-gray-300 focus:border-sky-500" name="link" onblur="handleLink(this)"/>
+	</div>
+	<label  for="title"><b>Title</b></label>
+	<input type="text" placeholder='Enter post title' value="{% if post and post.title %}{{post.title}}{% endif %}" class="rounded p-2 m-2 border-2 border-blue-500 placeholder:text-sm md:placeholder:text-md focus:ring-0 outline-none bg-transparent dark:border-gray-500 dark:focus:border-gray-300 focus:border-sky-500" name='title' required/>
+	</div>
+	<div class="flex flex-col md:w-[40rem] mt-4">
+	<label  for="tag"><b>Slug</b></label>
+	<input type="text" placeholder="Enter post slug" value="{% if post and post.tag %}{{post.tag}}{% endif %}" class="rounded p-2 m-2 border-2 placeholder:text-sm md:placeholder:text-md border-blue-500 focus:ring-0 outline-none bg-transparent dark:border-gray-500 dark:focus:border-gray-300 focus:border-sky-500"  name='tag' onchange="this.value=this.value.toLowerCase()" required/>
+	</div>
+	<div class="flex flex-col md:w-[40rem] mt-4">
+	<p class="text-sm md:text-base text-gray-400">Display next and previos post navigation</p>
+	<label  for="prevtitle"><b>Previous title</b></label>
+	<input type="text" placeholder="Enter previous post title" value="{% if post and post.prev.prevtitle is defined %}{{post.prev.prevtitle}}{% endif %}" class="rounded p-2 m-2 border-2 placeholder:text-sm md:placeholder:text-md border-blue-500 focus:ring-0 outline-none bg-transparent dark:border-gray-500 dark:focus:border-gray-300 focus:border-sky-500"  name='prevtitle' />
+	<label  for="prevlink"><b>Previous slug</b></label>
+	<input type="text" placeholder="Enter previous post slug" value="{% if post and post.prev.prevlink is defined %}{{post.prev.prevlink}}{% endif %}" class="rounded p-2 m-2 border-2 placeholder:text-sm md:placeholder:text-md border-blue-500 focus:ring-0 outline-none bg-transparent dark:border-gray-500 dark:focus:border-gray-300 focus:border-sky-500"  name='prevlink' onchange="this.value=this.value.toLowerCase()" />
+	</div>
+	<div class="flex flex-col md:w-[40rem] mt-4">
+	<label  for="nexttitle"><b>Next title</b></label>
+	<input type="text" placeholder="Enter next post title" value="{% if post and post.next.nexttitle is defined %}{{post.next.nexttitle}}{% endif %}" class="rounded p-2 m-2 border-2 placeholder:text-sm md:placeholder:text-md border-blue-500 focus:ring-0 outline-none bg-transparent dark:border-gray-500 dark:focus:border-gray-300 focus:border-sky-500"  name='nexttitle' />
+	<label  for="nextlink"><b>Next slug</b></label>
+	<input type="text" placeholder="Enter next post slug" value="{% if post and post.next.nextlink is defined %}{{post.next.nextlink}}{% endif %}" class="rounded p-2 m-2 border-2 placeholder:text-sm md:placeholder:text-md border-blue-500 focus:ring-0 outline-none bg-transparent dark:border-gray-500 dark:focus:border-gray-300 focus:border-sky-500"  name='nextlink' onchange="this.value=this.value.toLowerCase()" />
+	</div>
+	<div class="relative flex flex-col md:w-[40rem] border-2 border-blue-500 dark:border-gray-500 my-5 rounded">
+	<label  for="summary"><b>Summary</b></label>
+	<span id="limit-summary" class="absolute right-2 text-sm md:text-md text-gray-500">
+	0/300
+	</span>
+	<textarea data="300" name='summary' oninput="handleChange(this)" placeholder="Enter post summary" class="min-h-[10rem] placeholder:text-sm md:placeholder:text-md focus:outline-none border-0 focus:ring-0 p-2 m-2 bg-transparent" required  maxlength="300">{% if post and post.summary %}{{post.summary}}{% endif %}</textarea>
+	</div>
+	<p class="text-gray-400 text-sm md:text-base">Post support both markup and markdown</p>
+	<div class="relative flex flex-col md:w-[40rem] border-2 border-blue-500 dark:border-gray-500 rounded">
+	 	<label  for="post"><b>Post</b></label>
+	<span id="limit-post" class="absolute right-2 text-sm md:text-md text-gray-500">
+	0/1000
+	</span>
+	<textarea data="1000" placeholder="Enter post" class="md:min-h-[25rem] min-h-[10rem] placeholder:text-sm md:placeholder:text-md focus:outline-none border-0 focus:ring-0 p-2 m-2 bg-transparent" name='post' required oninput="handleChange(this)">{% if post and post.post %}{{post.post}}{% endif %}</textarea>
+	</div>
+	</div>
+	<div class="my-2">
+	  <label>
+	 <input checked = "{% if post and post.draft %} {{post.draft}} {% endif %}" class="focus:ring-0 -left-8 top-3" type="checkbox" name="draft"/>
+	 Save as draft
+	 </label>
+	</div>
+	<div class="w-full flex flex-col gap-6 justify-center items-center">
+	<button type="submit" class="bg-blue-500/75 w-[10rem] md:w-[40rem] rounded-md dark:bg-gray-900/75 dark:hover:bg-gray-800/75 hover:bg-blue-400 border border-blue-300 dark:border-gray-400  text-gray-100 p-2">Publish post</button>
+	<button type="button" onClick="handlePreview()" class="bg-blue-500/75 w-[10rem] md:w-[40rem] rounded-md dark:bg-gray-900/75 dark:hover:bg-gray-800/75 hover:bg-blue-300/75 border border-blue-300 dark:border-gray-400 text-gray-100 p-2">Preview</button>
+	</div>
+	</form>
+	</div>
+	</div>
+	</div>
+	</div>
+{% endblock %}	

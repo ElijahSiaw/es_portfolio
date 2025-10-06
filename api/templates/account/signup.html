@@ -1,0 +1,62 @@
+{% extends "layout.html" %}
+{% block title %}Sign up{% endblock %}
+{% block head %}
+ {{super()}}
+  <style>
+    
+    .input-group {
+      margin-bottom: 1rem;
+    }
+
+    .input-group label {
+      display: block;
+      margin-bottom: 0.5rem;
+      font-weight: bold;
+    }
+
+    .input-group input {
+      width: 100%;
+      padding: 0.75rem;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+      outline: none;
+      font-size: 1rem;
+    }
+
+    .toggle-text {
+      text-align: center;
+      margin-top: 1rem;
+    }
+
+    .toggle-text a {
+      color: #667eea;
+      cursor: pointer;
+      font-weight: bold;
+    }
+  </style>
+{% endblock %}
+{% block content %}
+<div class="container-main">
+  <div class="container bg-white/75 dark:bg-gray-800/75 text-gray-600 dark:text-white max-w-md">
+    <form method="POST">
+      <h2 class="text-center text-bold mb-2">Sign Up</h2>
+      <div class="input-group">
+        <label for="signupName">Full Name</label>
+        <input class="bg-white dark:bg-black/50" name="fullname" type="text" id="signupName" required>
+      </div>
+      <div class="input-group">
+        <label for="signupEmail">Email</label>
+        <input class="bg-white dark:bg-black/50" type="email" name="email" required>
+      </div>
+      <div class="input-group">
+        <label for="signupPassword">Password</label>
+        <input class="bg-white dark:bg-black/50" type="password" name="password" required>
+      </div>
+      <button class="border border-sky-800 dark:border-teal-600 rounded dark:bg-teal-600/50 bg-sky-500/50 hover:cursor-pointer p-2 w-full" type="submit">Sign Up</button>
+      <p class="toggle-text">
+        Already have an account? <a href="{{url_for('auth.login')}}">Log in</a>
+      </p>
+    </form>
+  </div>
+  </div>
+{% endblock %}

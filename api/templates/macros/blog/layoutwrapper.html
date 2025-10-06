@@ -1,0 +1,19 @@
+{% macro layoutwrapper(post) %}
+{% from 'macros/socialshare.html' import share with context %}
+{% from 'macros/blog/header.html' import header %}
+{% from 'macros/blog/footer.html' import footer %}
+{% block title %}{{post['title']}}{% endblock %}
+{% block head %}
+ {{super()}}
+ {% endblock %}
+ {% block blog %}
+  {% call header(post['title'], post['image']) %}{% endcall %}
+  <section>
+  <article>
+  {{post['post']}}
+  </article>
+  </section>
+{% call share(post['title']) %}{% endcall %}
+{% call footer(post['prevlink'],post['prevtitle'], post[nextlink], post[nexttitle]) %}{% endcall %}
+{% endblock %}
+{%- endmacro %}

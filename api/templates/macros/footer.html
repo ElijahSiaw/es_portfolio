@@ -1,0 +1,78 @@
+{% from 'macros/socialhandle.html' import mediahandle %}
+<footer class="bg-white dark:bg-gray-900/75 rounded p-2 mt-4 text-gray-900 dark:text-gray-300">
+         <div class="flex flex-col justify-center items-center p-1">
+            <div class="grid md:grid-cols-3">
+                <div class="flex flex-col justify-center">
+                    <h3 class="font-semibold my-2">Es Solution</h3>
+                    <p>We develop software for schools and businesses that want to digitally enhance their productivity and services.</p>
+                    <div class="w-full m-2 p-2">
+                {{mediahandle()}}
+                    </div>
+                </div>
+                <div class="flex flex-col justify-center items-center">
+                    <h3 class="font-semibold my-2">Quick as</h3>
+                    <ul class="footer-as">
+                        <li><a href="https://essolution.dev/#home">Home</a></li>
+                        <li><a href="https://essolution.dev/#services">Services</a></li>
+                        <li><a href="https://essolution.dev/#approach">Approach</a></li>
+                        <li><a href="https://essolution.dev/blog/home">Blog</a></li>  
+                        <li><a href="https://essolution.dev/projects">Projects</a></li>
+                        <li><a href="https://essolution.dev/#testimonials">Testimonials</a></li>
+                        <li><a href="https://essolution.dev/#about">About</a></li>
+                    </ul>
+                </div>
+                <div class="flex flex-col items-center my-4 md:my-1">
+                    <h3 class="font-semibold my-2">Services</h3>
+                    <ul class="footer-as">
+                        <li><a href="https://essolution.dev/#s1">Web Development</a></li>
+                        <li><a href="https://essolution.dev/#s2">Mobile App Development</a></li>
+                        <li><a href="https://essolution.dev/#s3">IT Consulting</a></li>
+                    </ul>
+                </div>
+                <div class="flex flex-col justify-center items-center my-4">
+                    <h3 class="font-semibold my-2">Approach</h3>
+                    <ul class="footer-as">
+                        <li><a href="https://essolution.dev/#p1">Agile Methodology</a></li>
+                        <li><a href="https://essolution.dev/#p2">Continuous Improvement</a></li>
+                        <li><a href="https://essolution.dev/#p3">Customer-Centric</a></li>
+                    </ul>
+                </div>
+              <div class="flex flex-col justify-center items-center my-4">
+                    <h3 class="font-semibold my-2">Resources</h3>
+                    <ul class="footer-as">
+                <li><a href="https://essolution.dev/blog/home">blog</a></li>
+               <li><a href="https://essolution.dev/blog/learn_web_development">Case studies</a></li>
+             <li><a href="https://essolution.dev/blog">Documentation</a>
+             </li>
+             <li><a href="https://support.essolution.dev">Support</a></li>
+             </ul>
+                </div>
+                 <div class="flex flex-col justify-center items-center mb-4">
+                    <h3 class="font-semibold my-2">Company</h3>
+                <ul class="footer-as">
+                <li><a href="https://essolution.dev">About us</a></li>
+              <li><a href={`${siteMetadata.github}#team`}>
+              Our team
+              </a></li>
+                <li><a href="https://essolution.dev/privacy">Privacy Policy</a></li>
+                        <li><a href="/terms-of-use">Terms Of Use</a></li>
+                        <li><a href="https://essolution.dev/terms-of-use#disclaimer">Disclaimer</a></li>
+                    </ul>
+                </div>
+              <div class="flex flex-col justify-center items-center my-4">
+                    <h3 class="font-semibold my-2">Contact</h3>
+                <address>
+                    <ul class="h-card footer-as">
+                        <li class="p-street-address p-locality p-country">Bekwai, Ashanti-Ghana</li>
+               <li><a class="u-telephone" href="tel:+233559904036">+233559904036</a></li>
+             <li><a class="u-email" href="mailto:info.essolution.dev">info.essolution.dev</a>
+             </li>
+                    </ul>
+                  </address>
+                </div>
+            </div>
+            <div class="text-center">
+                <p>&copy; {{current_year.year}} Es Solution. All Rights Reserved.</p>
+            </div>
+        </div>
+    </footer>

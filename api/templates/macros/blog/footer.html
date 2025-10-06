@@ -1,0 +1,28 @@
+{% macro footer(prev = None, next = None) %}
+<section class="flex justify-between my-6">
+{% if prev and prev.prevlink %}
+<button class="grid p-2">
+<span class="text-gray-500">Previous</span>
+<a class="text-blue-500 dark:text-amber-500" href="/blog/{{prev.prevlink}}">
+{{prev.prevtitle}}
+</a>
+</button>
+{% else %}
+<button class="invisible grid p-2">
+<span>Next</span>
+</button>
+{% endif %}
+{% if next and next.nextlink %}
+<button class="grid p-2">
+<span class="text-gray-500">Next</span>
+<a class="text-blue-500 dark:text-amber-500" href="/blog/{{next.nextlink}}">
+{{next.nexttitle}}
+</a>
+</button>
+{% else %}
+<button class="invisible grid p-2">
+<span>Next</span>
+</button>
+{% endif %}
+</section>
+{% endmacro %}

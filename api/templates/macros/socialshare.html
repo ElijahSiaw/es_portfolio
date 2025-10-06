@@ -1,0 +1,44 @@
+{% macro share(title) %}
+<h2 class="text-xl font-semibold my-2">Share</h2>
+    <section class="bg-white/75 w-full flex justify-center gap-4 md:gap-8 items-center p-1.5 my-1.5">
+    <article class="flex flex-col justify-center items-center">
+<a href="https://www.facebook.com/sharer/sharer.php?u={{request.url|urlencode}}&quote=Check%20out%20this%20post%20{{title}}%20from%20Es%20Solution&hashtag=%23Es%20Solution">
+  <img src="{{url_for('static', filename='facebook.svg')}}" width="40" height="40" alt="facebok"/>
+</a>
+<span class="hidden md:inline-grid">Facebook</span>
+</article>
+<article class="flex flex-col justify-center items-center">
+<a href="https://web.whatsapp.com/send?text=Check%20out%20this%20post%20{{title}}%20from%20Es%20Solution%3A%3A%20{{request.url|urlencode}}"
+>
+<img src="{{url_for('static', filename='whatsapp.svg')}}" width="40" height="40" alt="whatsapp"/>
+</a>
+<span class="hidden md:inline-grid">Whatsapp</span>
+</article>
+<article class="flex flex-col justify-center items-center">
+<a href="https://x.com/intent/tweet?url={{request.url|urlencode}}&text=Check%20out%20this%20post%20{{title}}%20from%20Es%20Solution"
+  url={baseUrl}
+  title={`Check out this post ${title} from ${siteMetadata.headerTitle}`}
+>
+  <img src="{{url_for('static', filename='x.svg')}}" width="35" height="35" alt="x"/>
+</a>
+<span class="hidden md:inline-grid">X</span>
+</article>
+<article class="flex flex-col justify-center items-center">
+<a href="https://www.linkedin.com/shareArticle?url={{request.url|urlencode}}%26mini%3Dtrue">
+<img src="{{url_for('static', filename='linkedin.svg')}}" width="40" height="40" alt="linkedin"/>
+</a>
+<span class="hidden md:inline-grid">Linkedin</span>
+</article>
+<article class="flex flex-col justify-center items-center">
+<a href="https://telegram.me/share/?url={{request.url|urlencode}}&text=Check%20out%20this%20post%20{{title}}%20from%20Es%20Solution">
+  <img src="{{url_for('static', filename='telegram.svg')}}" width="40" height="40" alt="telegram"/>
+</a>
+<span class="hidden md:inline-grid">Telegram</span>
+</article>
+<article class="md:hidden py-2.5 px-2 border-2 rounded-full grid justify-center items-center shrink-0 grow-0">
+<button data-share-title="{{title}}" data-share-url="{{request.url}}" class="text-xs" onclick="handleShare(this)">
+  ◼◼◼
+  </button>
+</article>
+</section>
+{% endmacro %}

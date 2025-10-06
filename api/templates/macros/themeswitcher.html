@@ -1,0 +1,8 @@
+{% macro switch() %}
+<section class="mx-4">
+<button onclick="toggleTheme()" id="theme-toggle" aria-describedby="toggle between dark and light mode" class="text-2xl focus:outline-none">
+          <span id="theme-toggle-light"><img class="text-sm rounded-full" src="{{url_for('static',filename='sun.svg')}}" width="30" height="30" alt="logo"/></span>
+          <span class="hidden" id="theme-toggle-dark"><img class="text-sm rounded-full" src="{{url_for('static',filename='moon.svg')}}" width="30" height="30" alt="logo"/></span>
+  </button>
+</section>
+{% endmacro %}

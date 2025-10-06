@@ -1,0 +1,18 @@
+{% from 'macros/socialshare.html' import share with context %}
+{% from 'macros/blog/header.html' import header %}
+{% from 'macros/blog/footer.html' import footer %}
+{% extends "blog/layout.html" %}
+{% block title %}{{post['title']}}{% endblock %}
+{% block head %}
+ {{super()}}
+ {% endblock %}
+ {% block blog %}
+  {{header(post['title'], post['image'], post['video'])}}
+  <section>
+  <article>
+  {{post['post']|safe}}
+  </article>
+  </section>
+{{share(post['title'])}}
+{{footer(prev,next)}}
+{% endblock %}

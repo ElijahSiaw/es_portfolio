@@ -1,0 +1,407 @@
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: Arial, sans-serif;}
+body {
+        margin: 0;
+        padding: 0;
+        font-family: -apple-system, system-ui, BlinkMacSystemFont, "Segoe UI", "Open Sans", "Helvetica Neue", Helvetica, Arial, sans-serif;
+    }
+    p{
+      display: flex;
+      flex-direction: column;
+    }
+    p img{
+      margin: auto;
+      border-radius: 10px;
+      background-color: rgba(250,250,250, 0.5);
+      height: 12rem;
+      padding: 1px;
+    }
+    .container {
+      padding: 2rem;
+      border-radius: 10px;
+      box-shadow: 0 8px 20px rgba(0,0,0,0.2);
+    }
+    .container-main{
+      position: relative;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      }
+    .header-title{
+      display:flex; 
+      align-items:center;
+      gap:10px;
+    }
+    .info{
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    p{
+      padding-top: 10px;
+    }
+    #user-initials{
+      padding: 10px;
+      border-right: 50%;
+      border-radius: 50%;
+      -moz-border-radius: 50%;
+      -webkit-border-radius: 50%;
+      border: 1px solid #ccc;
+    }
+
+    a{
+        text-decoration: none;
+    }
+    .msg-text{
+      text-align: center;
+      margin: auto;
+      width: 300px;
+      color: white;
+      padding: 10px;
+      border-radius: 5px;
+      -moz-border-radius: 5px;
+      -webkit-border-radius: 5px;
+    }
+    .msg-text.error{
+      border-color: #aa0000;
+      background-color: rgba(150,33,33,.5);
+    }
+    .msg-text.message{
+      background-color: rgba(33,150,33,.4);
+      border:1px solid #22aa22;
+    }
+    .msg-text.info{
+      background-color: rgba(33,33,150,.4);
+      border:1px solid #2222aa;
+    }
+  .dark{
+    color: white;
+  }
+  
+.dark table tr:nth-child(even) {
+  background-color: rgba(55, 55, 55, .8);
+}
+ table tr:nth-child(even) {
+  background-color: rgba(209, 209, 209, .8);
+}
+@media (max-width: 768px) {
+  table tr {
+  padding: 1px;
+  font-size: 12px;
+}
+}
+code[class*='language-'],
+pre[class*='language-'] {
+	color: #a9b7c6;
+	direction: ltr;
+	text-align: left;
+	white-space: pre;
+	word-spacing: normal;
+	word-break: normal;
+	-moz-tab-size: 4;
+	-o-tab-size: 4;
+	tab-size: 4;
+	-webkit-hyphens: none;
+	-moz-hyphens: none;
+	-ms-hyphens: none;
+	hyphens: none;
+	font-family: 'Operator Mono', 'Fira Code', Consolas, Monaco, 'Andale Mono', 'Ubuntu Mono', monospace;
+	font-weight: 400;
+	font-size: 17px;
+	line-height: 25px;
+	letter-spacing: 0.5px;
+	text-shadow: 0 1px #222245;
+}
+pre[class*='language-']::-moz-selection,
+code[class*='language-'] ::-moz-selection,
+pre[class*='language-']::selection,
+code[class*='language-'] ::selection {
+	color: inherit;
+	background: #a599e9;
+}
+
+/* Code blocks. */
+pre[class*='language-'] {
+	padding: 0.5rem;
+	margin: 0.5rem 0;
+	overflow: auto;
+	min-width: 200px;
+}
+
+:not(pre) > code[class*='language-'],
+pre[class*='language-'] {
+	background: #1e1e3f;
+}
+
+/* Inline code */
+:not(pre) > code[class*='language-'] {
+	padding: 0.1em;
+	border-radius: 0.3em;
+}
+.token {
+	font-weight: 400;
+}
+
+.token.comment,
+.token.prolog,
+.token.cdata {
+	color: #b362ff;
+}
+
+.token.delimiter,
+.token.keyword,
+.token.selector,
+.token.important,
+.token.atrule {
+	color: #ff9d00;
+}
+
+.token.operator,
+.token.attr-name {
+	color: rgb(255, 180, 84);
+}
+
+.token.punctuation {
+	color: #ffffff;
+}
+
+.token.boolean {
+	color: rgb(255, 98, 140);
+}
+
+.token.tag,
+.token.tag .punctuation,
+.token.doctype,
+.token.builtin {
+	color: rgb(255, 157, 0);
+}
+
+.token.entity,
+.token.symbol {
+	color: #6897bb;
+}
+
+.token.number {
+	color: #ff628c;
+}
+
+.token.property,
+.token.constant,
+.token.variable {
+	color: #ff628c;
+}
+
+.token.string,
+.token.char {
+	color: #a5ff90;
+}
+
+.token.attr-value,
+.token.attr-value .punctuation {
+	color: #a5c261;
+}
+
+.token.attr-value .punctuation:first-child {
+	color: #a9b7c6;
+}
+
+.token.url {
+	color: #287bde;
+	text-decoration: underline;
+}
+
+.token.function {
+	color: rgb(250, 208, 0);
+}
+
+.token.regex {
+	background: #364135;
+}
+
+.token.bold {
+	font-weight: bold;
+}
+
+.token.italic {
+	font-style: italic;
+}
+
+.token.inserted {
+	background: #00ff00;
+}
+
+.token.deleted {
+	background: #ff000d;
+}
+code.language-css .token.property,
+code.language-css .token.property + .token.punctuation {
+	color: #a9b7c6;
+}
+code.language-css .token.id {
+	color: #ffc66d;
+}
+
+code.language-css .token.selector > .token.class,
+code.language-css .token.selector > .token.attribute,
+code.language-css .token.selector > .token.pseudo-class,
+code.language-css .token.selector > .token.pseudo-element {
+	color: #ffc66d;
+}
+
+.token.class-name {
+	color: #fb94ff;
+}
+
+.token.operator,
+.token.entity,
+.token.url,
+.language-css .token.string,
+.style .token.string {
+	background: none;
+}
+
+.line-highlight.line-highlight:before,
+.line-highlight.line-highlight[data-end]:after {
+	content: '';
+}
+/* --- code title --- */
+figcaption[data-language="js"], figcaption[data-language="html"]{
+  padding: 2px;
+  color: rgb(200,45,150);
+}
+figcaption[data-language]{
+  padding: 2px;
+  color: #ccc;
+  border-bottom: 1px solid #ccc;
+}
+figcaption[data-language="plain"]{
+  padding: 2px;
+  color: deepskyblue;
+}
+figure{
+  position: relative;
+  padding: 5px;
+  border-top-right-radius: 5px;
+  border-top-left-radius: 5px;
+  -moz-border-radius-topright: 5px;
+  -moz-border-radius-topleft: 5px;
+  -webkit-border-top-left-radius: 5px;
+  -webkit-border-top-right-radius: 5px;
+  background-color: #1e1e3f;
+}
+figure[data-rehype-pretty-code-figure="data-example-bad"] pre, .dark figure[data-rehype-pretty-code-figure="data-example-bad"] pre, .dark figure[data-rehype-pretty-code-figure="data-example-bad"] pre code{
+background-color: #a33;
+}
+figcaption[data-rehype-pretty-code-title="data-example-bad"], .dark figcaption[data-rehype-pretty-code-title="data-example-bad"] pre{
+color: #a33;
+}
+figure[data-rehype-pretty-code-figure="data-example-good"] pre, .dark figure[data-rehype-pretty-code-figure="data-example-good"] pre, .dark figure[data-rehype-pretty-code-figure="data-example-good"] pre code{
+background-color: #3a3;
+}
+figcaption[data-rehype-pretty-code-title="data-example-good"], .dark figcaption[data-rehype-pretty-code-title="data-example-good"] pre{
+color: #3a3;
+}
+code {
+  word-break: break-all;
+  user-select: auto;
+  counter-reset: line;
+}
+code > [data-line]::before {
+  counter-increment: line;
+  content: counter(line);
+  display: inline-block;
+  width: 1rem;
+  margin-right: 1rem;
+  text-align: right;
+  color: white;
+}
+code[data-line-numbers-max-digits='2'] > [data-line]::before {
+  width: 2rem;
+}
+code[data-line-numbers-max-digits='3'] > [data-line]::before {
+  width: 3rem;
+}	
+
+.block-quote, .dark .block-quote{
+  border-left: 6px solid #557bff;
+  background-color: #34b;
+  padding-left: 20px; 
+  font-style: italic;
+  margin: 20px 0;
+  color: #eee;
+}
+.block-quote .block-quote-paragraph, .dark .block-quote .block-quote-paragraph{
+  position: relative;
+  padding-top: 0;
+}
+.block-quote p strong, .dark .block-quote p strong{
+  color: #557bff;
+}
+
+.block-quote .block-quote-paragraph .block-quote-strong::before, .dark .block-quote .block-quote-paragraph .block-quote-strong::before {
+  content: "ⓘ" ;
+  font-size: 1.2em;
+  color: #557bff;
+  position: absolute;
+  z-index: 1;
+  left: -20px;
+  font-style: normal;
+  top: 2px;
+  transform: translateY(2px);
+  line-height: 1;
+}
+.block-quote.quote-warning, .dark .block-quote.quote-warning, .dark .block-quote.quote-bad {
+  border-left: 6px solid #ffde11;
+  background-color: #fadecc;
+}
+.quote-warning p strong, .dark .quote-warning p strong, .quote-bad p strong, .dark .quote-bad p strong, .quote-warning .block-quote-paragraph .block-quote-strong::before, .dark .quote-warning .block-quote-paragraph .block-quote-strong::before, .quote-bad .block-quote-paragraph .block-quote-strong::before, .dark .quote-bad .block-quote-paragraph .block-quote-strong::before {
+  color: #ffae00;
+  content: "⚠";
+}
+.quote-warning p, .dark .quote-warning p, .quote-bad p, .dark .quote-bad p{
+  color: #555;
+}
+dialog:open {
+  opacity: 1;
+}
+dialog {
+  opacity: 0;
+  transition:
+    opacity 0.3s ease-out,
+    overlay 0.3s ease-out allow-discrete,
+    display 0.3s ease-out allow-discrete;
+  /* Equivalent to
+  transition: all 0.7s allow-discrete; */
+}
+ @starting-style {
+  dialog:open {
+    opacity: 0;
+  }
+}
+ dialog::backdrop {
+  background-color: rgb(0 0 0 / 0%);
+  transition:
+    display 0.3s allow-discrete,
+    overlay 0.3s allow-discrete,
+    background-color 0.3s;
+  /* Equivalent to
+  transition: all 0.7s allow-discrete; */
+}
+ 
+dialog:open::backdrop {
+  background-color: rgb(0 0 0 / 25%);
+}
+@starting-style {
+  dialog:open::backdrop {
+    background-color: rgb(0 0 0 / 0%);
+  }
+}
+    @media (max-width: 700px) {
+        .header-title h2{
+          display:none;
+        }
+    }

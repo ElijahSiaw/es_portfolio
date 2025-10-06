@@ -1,0 +1,50 @@
+{% macro comments_layout(comments, posts) %}
+{% set init = namespace() %}
+<section>
+{% for comment in comments %}
+{% if loop.first %}
+  <div class="flex justify-between items-center mb-4 px-4">
+  <h3 class="text-xl font-bold text-gray-900 dark:text-white">Comments</h3>
+  <a href="#" class="text-primary hover:underline">See all</a>
+      </div>
+<p class="text-gray-600 dark:text-gray-400 mb-4 px-4">{{loop.length}} comments</p>
+{% endif %}
+<div class="border border-gray-400 bg-white/75 dark:bg-gray-900/75 text-sm md:text-base p-2 rounded mb-4">
+{% set init.initials = '' %}
+{% for names in comment.name.split(' ') %}
+{% set init.initials = init.initials + names|list|first %}
+{% endfor %}
+<div class="w-full flex items-center text-xs gap-0.5 md:text-base md:gap-2">
+<div class="p-2 rounded-full bg-gradient-to-br from-purple-400 to-pink-400 border-2 border-gray-400">
+{{init.initials}}
+</div>
+<h3>{{comment.name}}</h3>
+<div> commented on {{comment.path.split('/')|last}}</div>
+<div class="m-auto flex items-center"><a title="Delete comment" href="{{url_for('dashboard.comment', id=comment.id)}}" class="m-0.5 md:m-2"><i class="fas fa-trash text-red-500 mr-1"></i><span class="hidden md:inline-flex">Delete</span></a>
+<button title="Reply comment" onclick="window.location.href='{{url_for('blog.post', slug=comment.path)}}#comments'" class="m-0.5 md:m-2"><i class="fas fa-share text-blue-500 mr-1"></i><span class="hidden md:inline-flex">Reply</span></button></div>
+</div>
+<time class="text-gray-500" data="{{comment.datecreated}}">{{comment.datecreated|format_datetime_short}}</time>
+<div class="p-1 my-2">
+{{comment.message}}
+</div>
+<div class="flex items-center gap-3">
+<span>{{comment.likes}}</span>
+<span><i class="fas fa-thumbs-up text-blue-500 mr-1"></i><strong class="hidden md:inline-flex">Likes</strong></span>
+<span>{{comment.loves}}</span>
+<span><i class="fas fa-heart text-red-500 mr-1"></i><strong class="hidden md:inline-flex">Loves</strong></span>
+<span>{{comment.dislikes}}</span>
+<span><i class="fas fa-thumbs-down text-amber-500 mr-1"></i><strong class="hidden md:inline+-flex">Dislikes</strong></span>
+</div>
+</div>
+{% else %}
+<div class="flex flex-col items-center justify-center p-2">
+<div class="m-auto">
+<p class="grid gap-4 text-center">
+<i class="fas fa-file text-2xl"></i>
+No comments
+</p>
+</div>
+</div>
+{% endfor %}
+</section>
+{% endmacro %}

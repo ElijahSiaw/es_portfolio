@@ -1,0 +1,10 @@
+{% extends 'layout.html' %}
+
+{% block title %}{{ e.code }} {{ e.name }}{% endblock title %}
+
+{% block content %}
+<section class="grid gap-4 justify-center align-center">
+<h1 class="text-4xl w-full text-center text-red-500">{{e.code}}</h1>
+	<p>{{ e.description }}</p>
+	</section>
+{% endblock content %}

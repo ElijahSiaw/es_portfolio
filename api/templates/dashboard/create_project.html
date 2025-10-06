@@ -1,0 +1,105 @@
+{% extends "layout.html" %}
+{% block title %}{% if project and project.id %}Update Project{% else %}Create Project{% endif %}{% endblock %}
+{% block head %}
+  {{ super() }}
+  <style>
+    .input-group {
+      margin-bottom: 1rem;
+    }
+
+    .input-group label {
+      display: block;
+      margin-bottom: 0.5rem;
+      font-weight: bold;
+    }
+
+    .input-group input {
+      width: 100%;
+      padding: 0.75rem;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+      outline: none;
+      font-size: 1rem;
+    }
+  </style>
+{% endblock %}
+{% block content %}
+<div class="flex justify-center text-center items-center p-2 m-2">
+	<div class="border-2 w-[20rem] md:w-[50rem] shadow  flex flex-col justify-center items-center  text-center p-2 m-2 border border-blue-500 dark:border-gray-500">
+	<div class="w-full flex justify-end">
+	<a class="text-2xl md:text-4xl text-red-800 hover:text-red-600 cursor-pointer font-black p-1" href="{{url_for('dashboard.projects')}}" aria-hidden>&times;</a>
+	</div>
+	<div class="w-full">
+	<div class="w-full">
+	<form method="POST" enctype="multipart/form-data" action="{% if project and project.id %}{{url_for('api.update_project', id=project.id)}}{% else %}{{url_for('api.project')}}{% endif %}" class="w-full flex flex-col justify-center items-center text-center"> 
+	  	<div class="flex flex-col md:w-[40rem] justify-center items-center">
+	  	<div class="bg-gray-500 rounded">
+	  	{% if project %}
+	  	{%set image_url=project.src|replace("b'","")|replace("'","")|safe%}
+ <div classname="flex items-center justify-center">
+<div id="svg-wrapper" class="{% if project and project.src.startswith('b') %}inline-block w-fit m-auto p-2{% else %}hidden{% endif %}">
+{{image_url}}
+</div>
+{% endif %}
+	  	<img id="image-wrapper" class="{% if project and project.src and not project.src.startswith('b') %} inline-block {% else %} hidden {% endif %} m-2" src="{% if project and project.src %} {% if project.src.startswith('https://') or project.src.startswith('data:') %}{{project.src}}{% else %}{{project.src}}{% endif %} {% endif %}" width="300" height="300" />
+	  	</div>
+	  </div>
+	  <div id="file-wrapper" class="{% if project and project.src %} hidden {% endif %} grid gap-3 w-[10rem] m-2 text-white">
+	   <label class="rounded p-2 bg-blue-500 border-blue-300  dark:bg-gray-800/75 border dark:border-gray-300">
+	   <input name="src" onchange="changeEvent(this)" type="file" class="hidden" accept="image/*" />
+	    Upload image
+	   </label>
+	  </div>
+	  <div class="grid gap-3 w-[10rem] m-2 text-white">
+	 <button type="button" id="remove-wrapper" class="{% if project and project.src %}inline-block{% else %}hidden{% endif %} rounded p-2 bg-blue-500 border-blue-300 dark:bg-gray-800/75 border dark:border-gray-300" onclick="removeFile()">Remove</button>
+	 </div>
+</div>
+<div class="flex flex-col justify-center items-center mb-4">
+	<div class="flex flex-col md:w-[40rem]">
+	<div id="link-wrapper" class="{% if project and project.src %}hidden{% endif %} grid my-3">
+	<label  for="title"><b>OR</b></label>
+	<input type="text" placeholder="Paste image link here" class="rounded p-2 m-2 border-2 border-blue-500 placeholder:text-sm md:placeholder:text-md focus:ring-0 outline-none bg-transparent dark:border-gray-500 dark:focus:border-gray-300 focus:border-sky-500" name="link" onblur="handleLink(this)"/>
+	</div>
+	<label  for="title"><b>Title</b></label>
+	<input type="text" placeholder='Enter project title' value="{% if project and project.title %}{{project.title}}{% endif %}" class="rounded p-2 m-2 border-2 border-blue-500 placeholder:text-sm md:placeholder:text-md focus:ring-0 outline-none bg-transparent dark:border-gray-500 dark:focus:border-gray-300 focus:border-sky-500" name='title' required/>
+	</div>
+	<div class="flex flex-col md:w-[40rem] mt-4">
+	<label  for="url"><b>Site URL</b></label>
+	<input type="url" placeholder="Enter site url of the project" value="{% if project and project.url %}{{project.url}}{% endif %}" class="rounded p-2 m-2 border-2 placeholder:text-sm md:placeholder:text-md border-blue-500 focus:ring-0 outline-none bg-transparent dark:border-gray-500 dark:focus:border-gray-300 focus:border-sky-500"  name='url' onchange="this.value=this.value.toLowerCase()"/>
+	</div>
+	<div class="flex flex-col md:w-[40rem] mt-4">
+	<label  for="repo"><b>Github Repository URL of the project</b></label>
+	<input type="url" placeholder="Enter Github repository url" value="{% if project and project.repo %}{{project.repo}}{% endif %}" class="rounded p-2 m-2 border-2 placeholder:text-sm md:placeholder:text-md border-blue-500 focus:ring-0 outline-none bg-transparent dark:border-gray-500 dark:focus:border-gray-300 focus:border-sky-500"  name='repo' onchange="this.value=this.value.toLowerCase()"/>
+	</div>
+		<div class="flex flex-col md:w-[40rem] mt-4">
+	<label  for="platform"><b>Platform</b></label>
+	<select class="rounded p-2 m-2 border-2 placeholder:text-sm md:placeholder:text-md border-blue-500 focus:ring-0 outline-none bg-transparent dark:border-gray-500 dark:focus:border-gray-300 focus:border-sky-500"  name='platform' required>
+	 <option value="" disabled selected="{% if project and project.platform %}{{False}}{% else %}{{True}}{% endif %}">Select platform</option>
+	  <option value="Web" selected="{% if project and project.platform == 'Web' %}true{% endif %}">Web</option>
+	   <option value="Mobile" selected="{% if project and project.platform == 'Mobile' %}true{% endif %}">Mobile</option>
+	   <option value="Desktop" selected="{% if project and project.platform == 'Desktop' %}{{true}}{% else%}{{False}}{% endif %}">Desktop</option>
+	</select>
+	</div>
+		<div class="flex flex-col md:w-[40rem] mt-4">
+	<label  for="builtwith"><b>Built with</b></label>
+	<span>List of comma separated frame work, programing language and technologies used to build the project</span>
+	<input type="text" placeholder="Eg lang 1, lang 2" value="{% if project and project.builtwith %}{% for lang in project.builtwith %}{% if loop.last%}{{lang}}{% else %}{{lang}}, {% endif %}{% endfor %}{% endif %}" class="rounded p-2 m-2 border-2 placeholder:text-sm md:placeholder:text-md border-blue-500 focus:ring-0 outline-none bg-transparent dark:border-gray-500 dark:focus:border-gray-300 focus:border-sky-500"  name='builtwith' required/>
+	</div>
+	<div class="relative flex flex-col md:w-[40rem] border-2 border-blue-500 dark:border-gray-500 rounded">
+	 	<label  for="project"><b>Project description</b></label>
+	<span id="limit-summary" class="absolute right-2 text-sm md:text-md text-gray-500">
+	0/300
+	</span>
+	<textarea data="300" placeholder="Enter project description" class="min-h-[10rem] placeholder:text-sm md:placeholder:text-md focus:outline-none border-0 focus:ring-0 p-2 m-2 bg-transparent" name="description" required oninput="handleChange(this)">{% if project and project.description %}{{project.description}}{% endif %}</textarea>
+	</div>
+	</div>
+	<div class="w-full flex flex-col gap-6 justify-center items-center">
+	<button type="submit" class="bg-blue-500/75 w-[10rem] md:w-[40rem] rounded-md dark:bg-gray-900/75 dark:hover:bg-gray-800/75 hover:bg-blue-400 border border-blue-300 dark:border-gray-400  text-gray-100 p-2">Save project</button>
+	<input type="reset" value="Reset" class="bg-blue-500/75 w-[10rem] md:w-[40rem] rounded-md dark:bg-gray-900/75 dark:hover:bg-gray-800/75 hover:bg-blue-300/75 border border-blue-300 dark:border-gray-400 text-gray-100 p-2"/>
+	</div>
+	</form>
+	</div>
+	</div>
+	</div>
+	</div>
+{% endblock %}	

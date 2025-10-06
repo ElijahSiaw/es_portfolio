@@ -1,0 +1,50 @@
+[
+  {
+    "id": 1,
+    "platform": "web",
+    "title": "EcomHeat - Manage Market Share, Monitor Sales Performance, Optimize Store Operation",
+    "description":
+      "The pioneering E-commerce data intelligence platform in Vietnam for brands with the most granular data information.",
+    "src": "/static/images/projects/ecom-heat.png",
+    "url": "https://youneteci.com/en/eci-ecomheat/?ref=essolution.dev",
+    "builtwith": ["React", "Bootstrap", "FeathersJS", "MySQL", "RabbitMQ"]
+  },
+  {
+    "id": 2,
+    "platform": "web",
+    "title": "E-Learning Website",
+    "description":
+      "Creating a web-based system designed to assist students to learn by solving questions under their subject area of study.",
+    "url": "https://learn.essolution.dev",
+    "src": "/static/images/projects/E-Learning.png",
+    "builtwith": ["NestJS", "PosgreSQL", "Tailwind"]
+  },
+    {
+    "id": 3,
+    "platform": "desktop",
+    "title": "Church Management System",
+    "description":
+      "Church Management System allow churches to manage their congregation and finances, track their expenses and analyse their budget with ease",
+    "src": "/static/images/projects/church.png",
+    "builtwith": ["Java", "MySQL"]
+  },
+  {
+    "id": 4,
+    "platform": "web",
+    "title": "School Management Website",
+    "description": "School Management Website that has the following features; Blog, Admission registration, Enrolment analysis, WASSCE analysis, School placement checker, Push notification, Print letters, Save letters as PDF, Email notification, Send SMS message and Log in with passkey",
+    "url": "https://sajostech-blog.vercel.app",
+    "src": "/static/images/projects/SchoolMng.png",
+    "builtwith": ["Next.js", "Tailwind", "platformscript", "Buttondown", "Disqus"]
+  },
+{
+    "id": 5,
+    "platform": "mobile",
+    "title": "Es QRCode",
+    "description": "Es QR Code allow users to scan QR Code, Barcode and also generate QRCodes.",
+    "url": "https://github.com/Es-Solution-Org/ES_QRCODE",
+    "src": "/static/images/projects/QRCodeWeb.png",
+    "repo": "ES_QRCODE",
+    "builtwith": ["React"]
+  }
+  ]

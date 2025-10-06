@@ -1,0 +1,10 @@
+{% macro mediahandle() %}
+<div class="flex justify-evenly items-center w-full">
+<a href="https://www.facebook.com/share/18emx7ief4"><img src="{{url_for('static',filename='facebook.svg')}}" width="40" height="40" alt="facebook"/></a>
+<a href="https://x.com/Essolutiondev"><img src="{{url_for('static',filename='x.svg')}}" width="40" height="40" alt="x icon"/></a>
+<a href="https://github.com/Es-Solution-Org/Es_Solution"><img src="{{url_for('static',filename='github.svg')}}" width="40" height="40" alt="github"/></a> 
+<a href="https://www.linkedin.com/in/elijah-siaw-b54597298">
+<img src="{{url_for('static',filename='linkedin.svg')}}" width="40" height="40" alt="linkedin"/></a>
+<a href="mailto:info.essolution.dev"><img src="{{url_for('static',filename='mail.svg')}}" width="40" height="40" alt="Email"/></a>
+</div>
+{%- endmacro %}

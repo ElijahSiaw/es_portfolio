@@ -1,0 +1,344 @@
+{% from 'macros/comments.html' import comments_layout %}
+{% extends "layout.html" %}
+{% block title %}Portfolio | Es Solution{% endblock %}
+{% block head %}
+  {{ super() }}
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+{% endblock %}
+{% block content %}
+    <div class="relative max-w-6xl mx-auto md:px-4 py-6">
+        <!-- Cover Photo Section -->
+        {% set likes = namespace(total = 0, grand=0) %} 
+        {% set init = namespace(initials="") %}
+        {% for name in g.user.fullname.split(' ') %}
+        {% set init.initials = init.initials + name|list|first|join %}
+        {% endfor %}
+        <div class="bg-white dark:bg-gray-800/75 rounded-lg shadow-sm overflow-hidden mb-6">
+            <!-- Cover Photo -->
+            <div id="user-cover-photo-container" class="bg-cover bg-[url('{{g.user.cover}}')] {% if not g.user.cover %} bg-gradient-to-br from-blue-400 to-purple-500 {% endif %}  h-80 relative">
+              {% if page == 'profile' %}
+              <form name="user-cover-photo-form" method="post" enctype="multipart/form-data" action="{{url_for('dashboard.post', slug='profile')}}">
+                <label id="cover-photo-wrapper" class="absolute bottom-4 right-4 bg-white dark:bg-gray-800 px-4 py-2 rounded-lg font-medium text-sm hover:bg-gray-50 dark:hover:bg-gray-700">
+              <input title="Change cover picture" name="user-cover-photo" type="file" onchange="changeProfileImage(this)" class="hidden" />
+                    <i class="fas fa-camera mr-2"></i><span class="hidden md:inline-flex">Edit cover photo</span>
+                </label>
+              <button title="Save cover picture" id="save-cover-photo-button" type="submit" class="absolute bottom-4 right-4 bg-white dark:bg-gray-800 px-4 py-2 rounded-lg font-medium hidden text-sm hover:bg-gray-50 dark:hover:bg-gray-700"><i class="fas fa-save text-green-500 mr-2"></i><span class="hidden md:inline-flex">Save cover photo</span>
+                </button>
+              </form>
+              {% endif %}
+            </div>
+            
+            <!-- Profile Info -->
+            <div class="px-6 pb-6">
+                <div class="flex flex-col md:flex-row items-start md:items-end -mt-20 mb-4">
+                    <div class="relative mb-4 md:mb-0">
+                <div class="h-40 w-40 bg-gradient-to-br from-purple-400 to-pink-400 object-fill rounded-full border-4 border-white dark:border-gray-800 flex items-center justify-center text-white text-4xl font-bold overflow-hidden">
+                 <img id="user-photo-container" src="{% if g.user.image %}{% if g.user.image.startswith('https://') or g.user.image.startswith('data:') %} {{g.user.image}} {% else %} {{url_for('static', filename=g.user.image)}} {% endif %} {% endif %}" data-user-photo="40px" class="{% if not g.user.image %} hidden {% endif %} rounded-full object-fill" height="300" width="300" alt="user photo" />
+                 {% if not g.user.image %}
+                 <span id="user-init" class="flex items-center">
+                 {{init.initials}}
+                 </span>
+                 {% endif %}
+                        </div> {% if page == 'profile' %}
+                <form name="user-photo-form" method="post" enctype="multipart/form-data" action="{{url_for('dashboard.post', slug='profile')}}">
+                  <label title="Change profile picture" id="photo-wrapper" class="absolute bottom-2 right-2 w-8 h-8 bg-gray-200 dark:bg-gray-600 rounded-full flex items-center justify-center hover:bg-gray-300 dark:hover:bg-gray-500">
+                <input data-user-photo="40px" name="user-photo" type="file" onchange="changeProfileImage(this)" class="hidden" required/>
+                <i class="fas fa-camera text-sm"></i>
+                </label>
+               <button title="Save changes" id="save-photo-button" class="absolute bottom-2 right-2 w-8 h-8 bg-gray-200 hidden dark:bg-gray-600 rounded-full flex items-center justify-center hover:bg-gray-300 dark:hover:bg-gray-500" type="submit">
+                <i class="fas fa-save text-green-500 text-sm"></i>
+                </button>
+                </form>
+                {% endif %}
+                    </div>
+                  </div>
+                  <div class="flex flex-col md:flex-row items-start md:items-end -mt-20 mb-4">
+                    <div class="md:ml-44 mt-16 md:mt-0.5 flex-1">
+              <h1 class="text-3xl font-bold text-gray-900 dark:text-white mb-1">{{g.user.fullname}}</h1>
+                        <p class="text-gray-600 dark:text-gray-400 mb-2">{{g.user.bio or 'Add your bio'}}</p>
+                    </div>
+      <div class="flex space-x-3">
+      {% if page == 'profile' %}
+  <dialog id="bio-modal-dialog" closeby="closerequest" onclose="handleCloseDialog()" class="left-[20%] top-32 px-2 rounded backdrop-blur-2xl bg-white/75 dark:bg-gray-900/75">
+    <button title="Exit dialog box" onclick="closeDialog(this)" id="close-user-bio-button" type="button" class="text-2xl text-red-700 bg-red-200 hover:bg-red-500 rounded px-2 m-1">&times;</button>
+  <form method="post" action="{{url_for('dashboard.post', slug='profile')}}" name="user-bio-form">
+  <div class="relative flex flex-col md:w-[40rem] border-2 border-blue-500 dark:border-gray-500 mb-5 rounded dark:text-gray-300 p-2">
+	<label  for="bio" class="w-full text-center"><strong>{% if g.user.bio %} Edit your bio {% else %} Add your bio {% endif %}</strong></label>
+	<span id="limit-summary" class="absolute right-2 text-sm md:text-md text-gray-500">
+	0/250
+	</span>
+	<textarea data="250" name='bio' oninput="handleChange(this)" placeholder="Enter your bio" class="min-h-[10rem] placeholder:text-sm md:placeholder:text-md focus:outline-none border-0 focus:ring-0 p-2 m-2 bg-transparent" required  maxlength="250">{% if g.user.bio %} {{g.user.bio}} {% endif %}</textarea>
+	<button title="Save bio" type="submit" class="m-auto w-40 hover:bg-gray-200/75 dark:bg-black/75 dark:hover:bg-gray-800/75 p-2 border border-gray-500 rounded"><i class="fa fa-save text-green-500 px-2"></i>Save</button>
+	</div>
+	</form>
+	</dialog>
+    <button title="Change your bio" onclick="openDialog()" id="user-bio-button" class="bg-primary dark:text-gray-200 px-6 py-2 rounded-lg font-medium hover:bg-opacity-90">
+      <i class="fas fa-plus mr-2"></i>Bio </button>
+      {% endif %}
+      {% if not page == 'profile' %}
+        <a title="Edit profile info" href="/dashboard/profile" class="bg-gray-200 dark:bg-gray-600 text-gray-700 dark:text-gray-300 px-6 py-2 rounded-lg font-medium hover:bg-gray-300 dark:hover:bg-gray-500">
+        <i class="fas fa-edit mr-2"></i>Edit profile
+            </a>
+        {% endif %}
+                </div>
+                </div>
+                
+      <!-- Navigation Tabs -->
+    <div class="backdrop-blur border-t dark:border-gray-700 pt-4 overflow-x-scroll md:overflow-x-hidden">
+      <nav class="flex space-x-8 text-gray-600 dark:text-gray-400">
+    <a href="/dashboard" class="hover:text-pink-600 {% if not page or page == 'profile' %} text-pink-600 border-b-2  border-violet-500 font-medium {% endif %} pb-2">Details</a>
+  <a href="/dashboard/posts" class="hover:text-pink-600 {% if page == 'posts' %} text-pink-600 border-b-2 border-violet-500 font-medium {% endif %} pb-2">Posts</a>
+    <a href="/dashboard/comments" class="hover:text-pink-600 {% if page == 'comments' %} text-pink-600 border-b-2 border-violet-500 font-medium {% endif %} pb-2">Comments</a>
+    <a href="/dashboard/videos" class="hover:text-pink-600 {% if page == 'videos' %} text-pink-600 border-b-2 border-violet-500 font-medium {% endif %} pb-2">Videos</a>
+    <a href="/dashboard/photos" class="hover:text-pink-600 {% if page == 'photos' %} text-pink-600 border-b-2 border-violet-500 font-medium {% endif %} pb-2">Photos</a>
+                    </nav>
+                </div>
+            </div>
+        </div>
+
+        <!-- Content Grid -->
+        <div class="flex flex-col">
+            <!-- Left Sidebar -->
+            <div class="space-y-6">
+                <!-- Intro -->
+            {% if not page %}
+                <div class="bg-white dark:bg-gray-800/75 rounded-lg shadow-sm p-6">
+                    <h3 class="text-xl font-bold text-gray-900 dark:text-white mb-4">General Information</h3>
+                    <div class="space-y-3">
+                        <div class="flex items-center space-x-3">
+                            <i class="fas fa-briefcase text-gray-500"></i>
+                            <span class="text-gray-700 dark:text-gray-300">{{g.user.occupation or 'Add (your occupation)'}} at {{g.user.company or '( your company )'}}</span>
+                        </div>
+                        <div class="flex items-center space-x-3">
+                            <i class="fas fa-graduation-cap text-gray-500"></i>
+                            <span class="text-gray-700 dark:text-gray-300">{{g.user.education or 'Add ( your educational background )'}}</span>
+                        </div>
+                        <div class="flex items-center space-x-3">
+                            <i class="fas fa-map-marker-alt text-gray-500"></i>
+                            <span class="text-gray-700 dark:text-gray-300">Lives in {{g.user.address or 'add ( your address )'}}</span>
+                        </div>
+                        <div class="flex items-center space-x-3">
+                            <i class="fas fa-envelope text-gray-500"></i>
+                <a href="mailto:{{g.user.email}}" class="text-gray-700 dark:text-gray-300 {% if g.user.email %}hover:underline{%endif%}">{{g.user.email or 'Add ( your email )'}}</a>
+                        </div>
+                        <div class="flex items-center space-x-3">
+                            <i class="fas fa-globe-americas text-gray-500"></i>
+                            <a href={{g.user.website}} class="text-gray-700 dark:text-gray-300 {% if g.user.website %}hover:underline{%endif%}">{{g.user.website or 'Add ( your website address )'}}</a>
+                        </div>
+                    </div>
+                <section title=" Edit profile info" class="my-4">
+                    <a href="/dashboard/profile" class="w-50 bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 p-2 rounded-lg font-medium hover:bg-gray-200 dark:hover:bg-gray-600">
+                Edit details
+                    </a>
+                </section>
+                </div>
+              {% endif %}
+
+                <!-- Photos -->
+              {% if page == 'photos' %}
+                <div class="bg-white dark:bg-gray-800 rounded-lg shadow-sm p-6">
+                    <div class="flex justify-between items-center mb-4">
+                        <h3 class="text-xl font-bold text-gray-900 dark:text-white">Photos</h3>
+                <a href="#">See all</a>
+                </div>
+              <div class="grid grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-4">
+                {% for post in posts|selectattr('image') %}    
+                              {% if post.image %}
+              {% if post.image.startswith('https://') or post.image.startswith('data:') %} {% set image_url =post.image %} {% else %} {% set image_url =url_for('static', filename=post.image) %} {% endif %}
+      {%set svg_url=post.image|replace("b'","")|replace("'","")|safe%}
+ <div classname="flex items-center justify-center">
+{% if post.image.startswith('b') %}
+ <div class="bg-gradient-to-br from-yellow-600 via-amber-600 to-red-400 p-2 rounded">
+<div id="svg-wrapper" class="m-auto overflow-hidden">
+{{svg_url}}
+</div>
+</div>
+{% else %}
+<div class="bg-gradient-to-br from-yellow-600 via-amber-600 to-red-400 p-0.5 rounded">
+  <div class="bg-[url('{{image_url}}')] bg-contain bg-no-repeat bg-center h-32 md:h-64 rounded-lg mb-4 mt-2"></div>
+  </div>
+{% endif %}
+                    </div>
+              {% endif %}
+               {% else %}
+              <div class="flex flex-col items-center justify-center p-2"><div class="m-auto"><p class="grid gap-4 text-center"><i class="fas fa-file text-2xl"></i>No photos</p></div></div>
+               {% endfor %}
+               </div>
+              </div>
+                 {% endif %}
+            {% if page == 'videos' %}
+                <!-- videos -->
+            <div class="relative bg-white dark:bg-gray-800 rounded-lg shadow-sm p-6">
+            <dialog id="video-modal-dialog" closeby="closerequest" onclose="handleCloseDialog()" class="left-[5%] md:left-[10%] top-24 px-2 rounded backdrop-blur-2xl bg-white/75 dark:bg-gray-900/75">
+    <button title="Exit dialog box" onclick="closeDialog(this)" id="close-user-bio-button" type="button" class="text-2xl text-red-700 bg-red-200 hover:bg-red-500 rounded px-2 m-1">&times;</button>
+  <div class="relative flex flex-col md:w-[40rem] border-2 border-blue-500 dark:border-gray-500 mb-5 rounded dark:text-gray-300 p-2">
+  <video src="/" class="aspect-video" controls/>
+	</div>
+	</dialog>
+      <div class="flex justify-between items-center mb-4">
+      <h3 class="text-xl font-bold text-gray-900 dark:text-white">Videos</h3>
+      <a href="#" class="text-primary hover:underline">See all</a>
+          </div>
+            <div class="grid grid-cols-2 md:grid-cols-3 gap-2">
+            {% for post in posts|selectattr('video') %}
+              {% if loop.first %}
+                    <p class="text-gray-600 dark:text-gray-400 mb-4">{{loop.length}} videos</p>
+                {% endif %}
+                  <div class="text-center">
+                <div class="flex w-full aspect-square bg-gradient-to-br from-blue-400 to-purple-500 rounded-lg mb-2"><button data-user-video="{{post.video}}" onclick="openVideoDialog(this)"><video src="{{post.video}}" width="300" height="200" class=" aspect-video" /></button></div>
+              <p class="text-sm font-medium text-gray-900 dark:text-white">{{post.title}}</p>
+                </div>
+              {% else %}
+              <div class="flex flex-col items-center justify-center p-2"><div class="m-auto"><p class="grid gap-4 text-center"><i class="fas fa-file text-2xl"></i>No videos</p></div></div>
+              {% endfor %}
+              </div>
+              </div>
+               {% endif %}
+            </div>
+          <!-- profile -->
+            {% if page == 'profile' %}
+       <div class="flex flex-col">
+            <div class="space-y-6">
+                <div class="bg-white dark:bg-gray-800/75 rounded-lg shadow-sm p-6">
+                    <h3 class="text-xl font-bold text-gray-900 dark:text-white mb-4">General information</h3>
+                <form method="post" action="{{url_for('dashboard.post', slug='profile')}}" class="space-y-3">
+                        <div class="flex items-center space-x-3">
+                            <i class="fas fa-briefcase text-gray-500"></i>
+                            <input name="occupation" oninput="document.getElementById('save-user-detail-button').classList.remove('hidden')" class="md:w-1/2 text-gray-700 dark:text-gray-300 p-2 focus:outline-sky-500 dark:focus:outline-gray-500 dark:bg-gray-800/75 focus:ring-0" value="{% if g.user.occupation %} {{g.user.occupation}} {% endif %}" placeholder="Add (your occupation / work)" />
+                        </div>
+            <div class="flex items-center space-x-3">
+          <i class="fas fa-house text-gray-500"></i>
+             <input name="company" oninput="document.getElementById('save-user-detail-button').classList.remove('hidden')" class="md:w-1/2 text-gray-700 dark:text-gray-300 p-2 focus:outline-sky-500 dark:focus:outline-gray-500 dark:bg-gray-800/75 focus:ring-0" value="{% if g.user.company %} {{g.user.company}} {% endif %}" placeholder="Add (your company name)" />
+                        </div>
+              <div class="flex items-center space-x-3">
+                            <i class="fas fa-graduation-cap text-gray-500"></i>
+             <input name="education" oninput="document.getElementById('save-user-detail-button').classList.remove('hidden')" class="md:w-1/2 text-gray-700 dark:text-gray-300 p-2 focus:outline-sky-500 dark:focus:outline-gray-500 dark:bg-gray-800/75 focus:ring-0" value="{% if g.user.education %} {{g.user.education}} {% endif %}" placeholder="Add (your education infomation)" />
+                        </div>
+                        <div class="flex items-center space-x-3">
+                            <i class="fas fa-map-marker-alt text-gray-500"></i>
+<input name="address" oninput="document.getElementById('save-user-detail-button').classList.remove('hidden')" class="md:w-1/2 text-gray-700 dark:text-gray-300 p-2 focus:outline-sky-500 dark:focus:outline-gray-500 dark:bg-gray-800/75 focus:ring-0" value="{% if g.user.address %} {{g.user.address}} {% endif %}" placeholder="Add (your address)" />
+                        </div>
+                        <div class="flex items-center space-x-3">
+                            <i class="fas fa-envelope text-gray-500"></i>
+          <input name="email" oninput="document.getElementById('save-user-detail-button').classList.remove('hidden')" class="md:w-1/2 text-gray-700 dark:text-gray-300 p-2 focus:outline-sky-500 dark:focus:outline-gray-500 dark:bg-gray-800/75 focus:ring-0" value="{% if g.user.email %} {{g.user.email}} {% endif %}" placeholder="Add (your email address)" />
+                        </div>
+                        <div class="flex items-center space-x-3">
+                            <i class="fas fa-globe-americas text-gray-500"></i>
+<input name="website" oninput="document.getElementById('save-user-detail-button').classList.remove('hidden')" class="md:w-1/2 text-gray-700 dark:text-gray-300 p-2 focus:outline-sky-500 dark:focus:outline-gray-500 dark:bg-gray-800/75 focus:ring-0" value="{% if g.user.website %} {{g.user.website}} {% endif %}" placeholder="Add (your website address)" />
+              </div>
+      <section id="save-user-detail-button" class="hidden flex items-center mx-4 md:mx-6 gap-2">
+      <button title="Save Changes to profile" type="submit" class="bg-gray-200/75 dark:bg-black/75 text-gray-700 dark:text-gray-300 border border-gray-400 p-1 md:p-2 rounded-lg font-medium hover:bg-gray-300 dark:hover:bg-gray-500">
+        <i class="fas fa-save mr-2 text-green-500"></i>Save changes
+            </button>
+    <button title="w-fit Cancel changes to profile" type="button" onclick="window.location.reload()" class="bg-red-800/75 text-gray-300 border border-red-400 p-1 md:p-2 rounded-lg font-medium hover:bg-gray-300 dark:hover:bg-gray-500">
+        <i class="fas fa-close mr-2 text-red-400"></i>Cancel
+            </button>
+            </section>
+                    </form>
+                </div>
+              </div>
+              </div>
+            {% endif %}
+            {% if page =='posts' %}
+
+                <!-- Posts -->
+            <div class="space-y-6">
+              {% for post in posts %}
+              {% set likes.total = 0 %}
+              {% set likes.grand= 0 %}
+              {% if loop.first %}
+  <div class="flex justify-between items-center mb-4 px-4">
+  <h3 class="text-xl font-bold text-gray-900 dark:text-white">Posts</h3>
+  <a href="{{url_for('blog.index')}}" class="text-primary hover:underline">See all</a>
+      </div>
+<div class="flex justify-between items-center mb-4 px-4">
+<p class="text-gray-600 dark:text-gray-400 mb-4">{{loop.length}} posts</p>
+<a href="{{url_for('dashboard.create')}}" class="text-blue-500 dark:text-amber-600 hover:underline">Create post</a>
+</div>
+{% endif %}
+                    <div class="bg-white dark:bg-gray-800 rounded-lg shadow-sm p-6">
+                        <div class="flex items-center justify-between mb-4">
+                            <div class="flex items-center space-x-3">
+                                <div class="w-10 h-10 bg-gradient-to-br from-purple-400 to-pink-400 rounded-full flex items-center justify-center text-white font-bold">
+                {% if g.user.image %}
+                <img class="h-10 w-10 rounded-full p-0.5" src="{{g.user.image}}" width="10" height="10" alt="{{post.title}}" />
+                {% else %}
+                 {{init.initials}}
+                 {% endif %}
+                    </div>
+                     <div>
+                 <h4 class="font-bold text-gray-900 dark:text-white">{{g.user.fullname}}</h4>
+            <p class="text-sm text-gray-500">{{post.dateupdated|format_date}}</p>
+                </div>
+               </div>
+              <div class="flex items-center gap-0.5">
+              <a href="{{url_for('dashboard.delete', id=post.tag)}}" class="text-red-500 hover:text-red-600 p-2"><i class="fas fa-trash p-0.5"></i><span class="hidden md:inline-flex">Delete</span>
+               </a>
+             <a href="{{url_for('dashboard.update', id=post.tag)}}" class="text-gray-500 hover:text-gray-700 dark:hover:text-gray-300 p-2"><i class="fas fa-edit p-0.5"></i><span class="hidden md:inline-flex">Edit</span>
+               </a>
+                 </div>
+                        </div>
+                        <h1 class="font-semibold my-2">{{post.title}}</h1>
+                        <p class="text-gray-900 dark:text-white mb-4">
+                {{post.summary|truncate(500)|safe}}
+                  </p>
+                  <a class="text-pink-600 hover:text-amber-500" href="{{url_for('blog.post',slug=post.tag)}}">Read more ➡</a>
+              {% if post.image %}
+              {% if post.image.startswith('https://') or post.image.startswith('data:') %} {% set image_url =post.image %} {% else %} {% set image_url =url_for('static', filename=post.image) %} {% endif %}
+    <div class="bg-gray-400/75 dark:bg-white/75 p-2 rounded">
+      {%set svg_url=post.image|replace("b'","")|replace("'","")|safe%}
+ <div classname="flex items-center justify-center">
+{% if post.image.startswith('b') %}
+<div id="svg-wrapper" class="w-fit m-auto">
+{{svg_url}}
+</div>
+{% else %}
+  <div class="bg-[url('{{image_url}}')] bg-contain bg-no-repeat bg-center h-32 md:h-64 rounded-lg mb-4 mt-2"></div>
+{% endif %}
+              </div>
+          </div>
+                {% endif %}
+            {% if post.video %}
+              {% if post.video.startswith('https://') or post.video.startswith('data:') %} {% set video_url =post.video %} {% else %} {% set video_url =url_for('static', filename=post.video) %} {% endif %}
+              <div class="bg-gray-400/75 dark:bg-white/75 p-0.5 rounded">
+              <video src="{{video_url}}" width="300" height="200" class="aspect-video"/>
+              </div>
+                {% endif %}
+                        <div class="flex items-center justify-between py-2 border-t border-b dark:border-gray-700">
+                            <div class="flex items-center space-x-1 text-sm text-gray-500">
+                                <div class="flex -space-x-1">
+              <div class="w-5 h-5 bg-blue-500 rounded-full flex items-center justify-center">
+              <i class="fas fa-thumbs-up text-white text-xs"></i>
+                                    </div>
+                                    <div class="w-5 h-5 bg-red-500 rounded-full flex items-center justify-center">
+                                        <i class="fas fa-heart text-white text-xs"></i>
+                                    </div>
+                                </div>
+                                {% for comment in comments %}{% if comment.path==post.tag %} {% set likes.total = likes.total + comment.likes + comment.loves %} {% set likes.grand = likes.grand + 1 %} {% endif %}{% endfor %}
+          <span>{{likes.total}}</span>
+                            </div>
+                            <div class="text-sm text-gray-500">
+                                <span>{{likes.grand}} comments</span>
+                            </div>
+                        </div>
+        <div class="flex items-center justify-around py-2">
+          <button onclick="window.location.href='{{url_for('dashboard.post', slug='comments')}}#{{post.slug}}'" class="flex items-center space-x-2 text-gray-600 dark:text-gray-400 hover:text-primary py-2 px-4 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700">
+                                <i class="fas fa-comment"></i>
+              <span>View comments on this post</span>
+                </button>
+                        </div>
+                    </div>
+                  {% else %}
+                    <div class="flex flex-col items-center justify-center p-2"><div class="m-auto">
+                <a href="{{url_for('dashboard.create')}}" class="text-blue-500 dark:text-amber-600 hover:underline">Create post</a>
+                <p class="grid gap-4 text-center"><i class="fas fa-file text-2xl"></i>No posts</p></div></div>
+                    {% endfor %}
+                </div>
+                 {% endif %}
+             <!-- Comments section -->    
+              {% if page == 'comments' %}
+              {{ comments_layout(comments, posts) }}
+              {% endif %}
+            </div>
+        </div>
+{% endblock %}
