@@ -79,10 +79,10 @@ def create_app(test_config=None):
     
     @app.route('/about/<path:slug>') # handles about page
     def more(slug):
-      users = essolution.models.get_users()
+      user = essolution.models.get_users()
       posts = essolution.models.load_posts()
       comments = essolution.models.get_comments()
-      return render_template('about.html', users=users, posts=posts, comments=comments, page=slug)
+      return render_template('about.html', user=user, posts=posts, comments=comments, page=slug)
       
     @app.route('/api/theme')
     def change_theme():
