@@ -63,7 +63,7 @@ def login():
             res.set_cookie('es-se-state', token, 'max_age', expiredin)
             return res, 200
         flash(error, 'error')
-    if session['user_id']:
+    if session.get('user_id'):
       return redirect(url_for('home'))
     return render_template('account/login.html')
   
@@ -115,7 +115,7 @@ def verify_token(f):
 def protected(view):
     @functools.wraps(view)
     def wrapped_view(**kwargs):
-        if session['user_id'] is None:
+        if not session.get('user_id'):
             return redirect(url_for('auth.login', returnurl=quote(request.path.replace("/dashboard","",1), safe="")))
         return view(**kwargs)
     return wrapped_view
