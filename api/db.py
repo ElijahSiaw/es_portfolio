@@ -57,7 +57,7 @@ def init_db(mode):
        
 
 @click.command('init-db')
-@click.option('--mode', default='dev', help='The setup mode (dev or prod).')
+@click.option('--mode', default='prod', help='The setup mode (dev or prod).')
 def init_db_command(mode):
     """Clear the existing data and create new tables."""
     click.echo('Initializing database')
