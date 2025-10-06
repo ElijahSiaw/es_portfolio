@@ -115,7 +115,7 @@ def create_app(test_config=None):
 
 def init_db(app):
     from . import db
-    db.init_app(app)
+    db.init_db()
     log.info('Using database: "%s"' % db.Esblog_db)
 
 def init_templating(app):
