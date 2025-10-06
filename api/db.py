@@ -24,7 +24,7 @@ def close_db(e=None):
     if db is not None:
         db.close()
 user = None
-def init_db(mode):
+def init_db(mode="prod"):
       log.info(f'Running in {mode} mode')
       db = Esblog_db()
       settings = essolution.config(Esblog_db)
