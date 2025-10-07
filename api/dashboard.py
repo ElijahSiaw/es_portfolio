@@ -6,7 +6,7 @@ from jinja2.exceptions import TemplateNotFound
 import json
 import os
 from api import cache, essolution
-from api.auth import protected, verify_token
+from api.auth import verify_token
 
 bp = Blueprint('dashboard', __name__)
 
@@ -15,14 +15,14 @@ def load_comments(id):
       
 @bp.route('/dashboard')
 #main dashboard page
-@protected
+@verify_token
 def index():
     posts = essolution.models.load_posts()
     comments = essolution.models.get_comments()
     return render_template('dashboard/index.html', page=None, posts=posts, comments=comments), 200
         
 @bp.route('/dashboard/create', methods=['GET'])
-@protected
+@verify_token
 @cache.cached(timeout=50)
 def create():
     return render_template('dashboard/create.html', post=None), 200
@@ -39,7 +39,7 @@ def get_post(id, check_author=True):
     return dict(post)
     
 @bp.route('/dashboard/<path:id>/update', methods=['GET'])
-@protected
+@verify_token
 def update(id):
     post = get_post(id)
     post['prev'] = json.loads(post.get('prev'))
@@ -47,7 +47,7 @@ def update(id):
     return render_template('dashboard/create.html', post=post), 200
     
 @bp.route('/dashboard/<path:id>/delete', methods=['GET'])
-@protected
+@verify_token
 def delete(id):
     post = essolution.models.find_post(id)
     if not post:
@@ -74,7 +74,7 @@ def delete(id):
     return redirect(url_for('dashboard.post', slug='posts'))
 
 @bp.route('/dashboard/comment/<int:id>/delete', methods=['GET'])
-@protected
+@verify_token
 def comment(id):
     if not essolution.models.comment_exists(id):
       flash('Comment already deleted', 'error')
@@ -85,7 +85,6 @@ def comment(id):
     
 @bp.route('/dashboard/<path:slug>', methods=['GET','POST']) # handles all other dashboard pages
 @verify_token
-@protected
 def post(slug):
   try:
     data = None
@@ -118,24 +117,24 @@ def post(slug):
   except TemplateNotFound:
         abort(404, 'Page not found')
 @bp.route('/projects', methods=['GET'])
-@protected
+@verify_token
 def projects():
   projects = essolution.models.load_projects()
   return render_template('dashboard/projects.html', projects=projects)
   
 @bp.route('/projects/create', methods=['GET'])
-@protected
+@verify_token
 def create_project():
   return render_template('dashboard/create_project.html', project=None),200
   
 @bp.route('/projects/<int:slug>/update', methods=['GET'])
-@protected
+@verify_token
 def update_project(slug):
   project = essolution.models.find_project(slug)
   return render_template('dashboard/create_project.html', project=project), 200
   
 @bp.route('/projects/<int:slug>/delete', methods=['GET'])
-@protected
+@verify_token
 def delete_project(slug):
   if not essolution.models.project_exists(slug):
     flash('Project does not exist', 'error')
