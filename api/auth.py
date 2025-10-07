@@ -35,7 +35,6 @@ def register():
     return render_template('account/signup.html')
 
 @bp.route('/login', methods=('GET', 'POST'))
-@verify_token
 def login():
     if request.method == 'POST':
         email = request.form['email']
