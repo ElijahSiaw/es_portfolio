@@ -1,14 +1,18 @@
 tailwind.config={
   'darkMode': 'class',
-  theme:{
-  extend:{
-    backgroundImage:{
-      'port-bg': `url("${location.origin}/static/images/bg.png")`
-    }
-  }
+  theme: {
+    extend: {
+      backgroundImage: {
+        'gradient-radial': 'radial-gradient(var(--tw-gradient-stops))',
+        'gradient-conic':
+          'conic-gradient(from 180deg at 50% 50%, var(--tw-gradient-stops))',
+		   'port-bg': `url("${location.origin}/static/images/bg.png")`,
+      },
+    },
   },
-  plugin:[]
+  plugins: [],
 }
+
   function onToggleNav(){
       const menu = document.getElementById('toggle-menu')
       if (!menu.classList.contains('translate-x-full')) {
