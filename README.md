@@ -18,6 +18,8 @@
 * git clone the repository
 * install dependencies
   ```bash title="bash"
+  #navigate to portfolio directory
+  cd portfolio
   #install dependicies form requirements
   pip install -r requirements.txt
   ```
