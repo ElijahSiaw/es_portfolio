@@ -42,5 +42,5 @@
 * Email: [info@essolution.dev](mailto:info@essolution.dev)
 
 #### Bug 🐛
-Report a bug found to [essolution.dev/feedback](https://essolution.dev/feedback) 
-Contact support at [support.essolution.dev](https://support.essolution.dev)
+* Report a bug found to [essolution.dev/feedback](https://essolution.dev/feedback) 
+* Contact support at [support.essolution.dev](https://support.essolution.dev)
