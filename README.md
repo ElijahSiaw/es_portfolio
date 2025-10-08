@@ -41,7 +41,7 @@
 [portfolio.essolution.dev](https://portfolio.essolution.dev)
 
 #### Developer ❤
-* Name: Es Solution
+* Name: Elijah Siaw | Es Solution
 * Email: [info@essolution.dev](mailto:info@essolution.dev)
 
 #### Bug 🐛
