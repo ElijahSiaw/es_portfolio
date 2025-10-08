@@ -12,14 +12,13 @@ from api.auth import verify_token
 bp = Blueprint('api', __name__, url_prefix='/api') #handles api calls
 @bp.route('/message', methods=['POST'])
 #send email message
-@cross_origin(origins=['https://api.essolution.dev', 'http://localhost:5000'], methods=['POST'], support_credentials=True)
+@cross_origin(origins=['http://localhost:5000'], methods=['POST'])
 def message():
     try:
       data = {"name":request.form["fullname"],"email":request.form["email"],"org":request.form["org"],"position":request.form["position"],"message":request.form["message"]}
       # replacr this with your email to recieve mails
       sender = 'elijahsiaw@gmail.com'
-     # api_url = "https://api.essolution.dev/v3/mail"
-      api_url = f"http://localhost:3000/v3/mail?sender={sender}"
+      api_url = f"https://api.essolution.dev/v3/mail?sender={sender}"
       #set the API KEY headers
       headers = {'APIKEY':current_app.config['API_KEY']}
         # Send the POST request with the data as a JSON payload
@@ -40,7 +39,7 @@ def message():
 @bp.route('/post', methods=['POST'])
 @verify_token
 #send blog post
-@cross_origin(origins=['https://api.essolution.dev', 'http://localhost:5000'], methods=['POST'], support_credentials=True)
+@cross_origin(origins=['http://localhost:5000'], methods=['POST'])
 def post():
   try:
 
@@ -98,7 +97,7 @@ def post():
 @bp.route('/post/<int:id>/update', methods=['POST'])
 @verify_token
 #update blog post
-@cross_origin(origins=['https://api.essolution.dev', 'http://localhost:5000'], methods=['POST'], support_credentials=True)
+@cross_origin(origins=['http://localhost:5000'], methods=['POST'])
 def update(id):
   try:
     image = str(request.files.get("image").read()) if request.files.get("image").filename.endswith(".svg") else essolution.base64_url(request.files.get("image"))
@@ -153,7 +152,7 @@ def update(id):
 @bp.route('/project', methods=['POST'])
 #create project
 @verify_token
-@cross_origin(origins=['https://api.essolution.dev', 'http://localhost:5000'], methods=['POST'], support_credentials=True)
+@cross_origin(origins=['http://localhost:5000'], methods=['POST'])
 def project():
   try:
     image = str(request.files.get("src").read()) if request.files.get("src").filename.endswith(".svg") else essolution.base64_url(request.files.get("src"))
@@ -171,7 +170,7 @@ def project():
 @bp.route('/project/<string:id>/update', methods=['POST'])
 #update project
 @verify_token
-@cross_origin(origins=['https://api.essolution.dev', 'http://localhost:5000'], methods=['POST'])
+@cross_origin(origins=['http://localhost:5000'], methods=['POST'])
 def update_project(id):
   try:
     image = str(request.files.get("src").read()) if request.files.get("src").filename.endswith(".svg") else essolution.base64_url(request.files.get("src"))
