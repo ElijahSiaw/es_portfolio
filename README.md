@@ -33,9 +33,9 @@
   bash prod.sh
   ```
 * run the application
-  `#the application will be available at port 5000`
-  visit [http://localhost:5000](http://localhost:5000) from any browser
-  See the terminal or console for your login credentials
+  `the application will be available at port 5000`
+  * visit [http://localhost:5000](http://localhost:5000) from any browser
+  * See the terminal or console for your login credentials
 
 ## See it in action
 [portfolio.essolution.dev](https://portfolio.essolution.dev)
